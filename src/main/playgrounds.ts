@@ -320,19 +320,51 @@ export async function startDevCommand(id: string, command?: string): Promise<{ s
   const item = list.find((x) => x.id === id && x.type === 'github') as GithubPlaygroundMeta | undefined
   if (!item) throw new Error('GitHub playground not found')
 
-  let cmd = command || item.runCommand
+  let cmd = command
   if (!cmd) {
-    // heuristic: if package.json exists, run npm install && npm run dev
-    try {
-      const pkgPath = path.join(item.path, 'package.json')
-      if (fs.existsSync(pkgPath)) {
-        cmd = 'npm install && npm run dev'
+    // If app is from catalog, use catalog's defaultRunCommand
+    if (item.appStoreId) {
+      try {
+        const catalogApp = await getAppById(item.appStoreId)
+        console.log(`Catalog lookup for ${item.appStoreId}:`, catalogApp ? 'found' : 'not found')
+        if (catalogApp) {
+          console.log(`defaultRunCommand exists: ${!!catalogApp.defaultRunCommand}, value: ${catalogApp.defaultRunCommand ? catalogApp.defaultRunCommand.substring(0, 50) + '...' : 'undefined'}`)
+        }
+        if (catalogApp?.defaultRunCommand) {
+          const trimmed = catalogApp.defaultRunCommand.trim()
+          if (trimmed) {
+            cmd = trimmed
+            console.log(`Using catalog defaultRunCommand for ${item.appStoreId}: ${cmd.substring(0, 100)}...`)
+          } else {
+            console.warn(`Catalog app ${item.appStoreId} found but defaultRunCommand is empty after trim`)
+          }
+        } else {
+          console.warn(`Catalog app ${item.appStoreId} found but defaultRunCommand is missing`)
+        }
+      } catch (error) {
+        // If catalog lookup fails, fall through to next options
+        console.warn(`Failed to get catalog app ${item.appStoreId}:`, error)
       }
-    } catch {
-      // ignore
+    }
+    // Fall back to stored runCommand if not from catalog or catalog has no defaultRunCommand
+    if (!cmd && item.runCommand && item.runCommand.trim()) {
+      cmd = item.runCommand
+    }
+    // Final fallback: heuristic if package.json exists, run npm install && npm run dev
+    if (!cmd) {
+      try {
+        const pkgPath = path.join(item.path, 'package.json')
+        if (fs.existsSync(pkgPath)) {
+          cmd = 'npm install && npm run dev'
+        }
+      } catch {
+        // ignore
+      }
     }
   }
-  if (!cmd) throw new Error('No dev command configured')
+  if (!cmd) {
+    throw new Error(`No dev command configured for ${id}. ${item.appStoreId ? `Catalog app ${item.appStoreId} not found or has no defaultRunCommand.` : 'No runCommand in meta and no package.json found.'}`)
+  }
 
   devLogs.set(id, '')
   appendLog(id, `$ ${cmd}\n`)

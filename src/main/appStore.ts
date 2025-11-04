@@ -5,7 +5,32 @@ import type { AppCatalogEntry } from '../common/types'
 
 // Get directory path - works in both dev and production
 // When compiled to CommonJS, __dirname is available
-const APPS_DIR = path.join(__dirname, 'apps')
+// Try dist/main/apps first (production), then src/main/apps (dev), then __dirname/apps (fallback)
+function getAppsDir(): string {
+  const distApps = path.join(__dirname, 'apps')
+  if (fs.existsSync(distApps)) {
+    return distApps
+  }
+  // In dev mode, __dirname might point to src/main, or we need to go up to project root
+  // Check if we're in dist/main and need to go up to project root
+  if (__dirname.includes('dist/main')) {
+    const projectRoot = path.resolve(__dirname, '../../..')
+    const srcApps = path.join(projectRoot, 'src/main/apps')
+    if (fs.existsSync(srcApps)) {
+      return srcApps
+    }
+  }
+  // Fallback: try src/main/apps relative to __dirname
+  const srcApps = path.join(__dirname, '../../src/main/apps')
+  if (fs.existsSync(srcApps)) {
+    return srcApps
+  }
+  // Last resort: __dirname/apps
+  return distApps
+}
+
+const APPS_DIR = getAppsDir()
+console.log(`APPS_DIR resolved to: ${APPS_DIR}`)
 
 let cachedCatalog: AppCatalogEntry[] | null = null
 
@@ -51,6 +76,7 @@ async function loadAppCatalog(): Promise<AppCatalogEntry[]> {
           appConfig.id = expectedId // Use filename as id
         }
 
+        console.log(`Loaded app ${appConfig.id} from ${file}, defaultRunCommand: ${appConfig.defaultRunCommand ? 'present (' + appConfig.defaultRunCommand.length + ' chars)' : 'missing'}`)
         catalog.push(appConfig)
       } catch (error) {
         console.error(`Error loading app config from ${file}:`, error)

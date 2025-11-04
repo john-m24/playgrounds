@@ -145,27 +145,33 @@ export default function App() {
                       <button className="btn" onClick={() => window.api.openTerminal(item.id)}>Open terminal</button>
                     </div>
                     <div style={{ display: 'flex', gap: 8 }}>
-                      {running[item.id] ? (
-                        <button className="btn" onClick={async () => { await window.api.stopDev(item.id) }}>Stop dev</button>
-                      ) : (
-                        <button
-                          className="btn"
-                          onClick={async () => {
-                            setErr(null)
-                            try {
-                              const { running: wasRunning, log } = await window.api.getDevLog(item.id)
-                              if (log) setLogs((prev) => ({ ...prev, [item.id]: log }))
-                              setRunning((prev) => ({ ...prev, [item.id]: wasRunning }))
-                              await window.api.startDev({ id: item.id })
-                              setOpenLogId(item.id)
-                            } catch (e: any) {
-                              setErr(e?.message || String(e))
-                            }
-                          }}
-                        >
-                          Run dev
-                        </button>
-                      )}
+                      <button
+                        className="btn"
+                        disabled={running[item.id]}
+                        onClick={async () => {
+                          setErr(null)
+                          try {
+                            const { running: wasRunning, log } = await window.api.getDevLog(item.id)
+                            if (log) setLogs((prev) => ({ ...prev, [item.id]: log }))
+                            setRunning((prev) => ({ ...prev, [item.id]: wasRunning }))
+                            await window.api.startDev({ id: item.id })
+                            setOpenLogId(item.id)
+                          } catch (e: any) {
+                            setErr(e?.message || String(e))
+                          }
+                        }}
+                      >
+                        Start
+                      </button>
+                      <button
+                        className="btn"
+                        disabled={!running[item.id]}
+                        onClick={async () => {
+                          await window.api.stopDev(item.id)
+                        }}
+                      >
+                        Stop
+                      </button>
                       <button
                         className="btn"
                         onClick={async () => {
