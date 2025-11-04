@@ -1,7 +1,14 @@
 Playgrounds Desktop
 ===================
 
-An Electron + TypeScript desktop app to spin up and throw away “playgrounds” for GitHub repos and Docker images — without manually running git clone, rm -rf, docker pull, docker run, etc.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/your-username/playgrounds-desktop)
+
+An Electron + TypeScript desktop app to spin up and throw away "playgrounds" for GitHub repos and Docker images — without manually running git clone, rm -rf, docker pull, docker run, etc.
+
+## Repository
+
+[GitHub Repository](https://github.com/your-username/playgrounds-desktop) - Replace `your-username` with your actual GitHub username when publishing.
 
 Features
 --------
@@ -67,4 +74,16 @@ Notes
 - Metadata: `~/.playgrounds/meta.json`
 - Editor detection prefers `code` if available; macOS/Windows/Linux fallbacks are attempted.
 - Terminal opening varies by OS/DE; common terminals are attempted on Linux.
+
+## Contributing
+
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## Code of Conduct
+
+This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 

@@ -1,10 +1,24 @@
 {
   "name": "playgrounds-desktop",
   "version": "0.1.0",
-  "private": true,
-  "description": "Electron app to quickly spin up throwaway GitHub and Docker playgrounds",
+  "description": "Electron app to quickly spin up GitHub and Docker playgrounds",
   "main": "dist/main/index.cjs",
   "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/playgrounds-desktop.git"
+  },
+  "keywords": [
+    "electron",
+    "desktop",
+    "playground",
+    "github",
+    "docker",
+    "development",
+    "typescript",
+    "react"
+  ],
   "scripts": {
     "dev:main": "tsup src/main/index.ts --format=cjs --dts --out-dir dist/main --watch --sourcemap",
     "dev:preload": "tsup src/preload/index.ts --format=cjs --dts --out-dir dist/preload --watch --sourcemap",
