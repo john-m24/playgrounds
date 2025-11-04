@@ -8,7 +8,7 @@ An Electron + TypeScript desktop app to spin up and throw away "playgrounds" for
 
 ## Repository
 
-[GitHub Repository](https://github.com/john-m24/playground) - Replace `john-m24` with your actual GitHub username when publishing.
+[GitHub Repository](https://github.com/john-m24/playground)
 
 Features
 --------
