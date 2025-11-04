@@ -299,6 +299,43 @@ export async function openTerminal(playgroundId: string) {
   await run(`sh -lc 'cd "${target}"; ${process.env.SHELL || 'bash'}'`)
 }
 
+export async function openPlaygroundsDirectory() {
+  const target = BASE_DIR
+  if (process.platform === 'darwin') {
+    await run(`open -a Terminal "${target}"`)
+    return
+  }
+  if (process.platform === 'win32') {
+    await run(`cmd /c start wt -d "${target}"`)
+    return
+  }
+  // Linux - attempt common terminals
+  const candidates = [
+    'x-terminal-emulator',
+    'gnome-terminal',
+    'konsole',
+    'xfce4-terminal',
+    'alacritty'
+  ]
+  for (const bin of candidates) {
+    const p = await which(bin)
+    if (p) {
+      if (bin === 'gnome-terminal') {
+        await run(`${bin} --working-directory="${target}" & disown`)
+      } else if (bin === 'konsole') {
+        await run(`${bin} --workdir "${target}" & disown`)
+      } else if (bin === 'alacritty') {
+        await run(`${bin} --working-directory "${target}" & disown`)
+      } else {
+        await run(`${bin} --working-directory="${target}" & disown`)
+      }
+      return
+    }
+  }
+  // last resort
+  await run(`sh -lc 'cd "${target}"; ${process.env.SHELL || 'bash'}'`)
+}
+
 export async function deletePlayground(id: string) {
   const list = await readMeta()
   const item = list.find((x) => x.id === id)

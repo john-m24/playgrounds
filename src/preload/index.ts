@@ -10,6 +10,7 @@ const api = {
   deletePlayground: (id: string) => ipcRenderer.invoke('playgrounds:delete', id),
   openEditor: (id: string) => ipcRenderer.invoke('playgrounds:openEditor', id),
   openTerminal: (id: string) => ipcRenderer.invoke('playgrounds:openTerminal', id),
+  openPlaygroundsDirectory: () => ipcRenderer.invoke('playgrounds:openDirectory'),
   dockerInstalled: (): Promise<boolean> => ipcRenderer.invoke('docker:installed'),
   dockerStop: (containerId: string) => ipcRenderer.invoke('docker:stop', containerId),
   dockerRemove: (containerId: string) => ipcRenderer.invoke('docker:remove', containerId),

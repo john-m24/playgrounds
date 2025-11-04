@@ -201,8 +201,9 @@ export default function App() {
         </div>
       </div>
 
-      <div style={{ marginTop: 16 }}>
+      <div style={{ marginTop: 16, display: 'flex', gap: 8 }}>
         <button className="btn" onClick={refresh} disabled={loading}>Refresh</button>
+        <button className="btn" onClick={() => window.api.openPlaygroundsDirectory()}>Open Playgrounds Directory</button>
       </div>
     </div>
   )

@@ -10,6 +10,7 @@ import {
   checkDockerInstalled,
   openInEditor,
   openTerminal,
+  openPlaygroundsDirectory,
   stopDockerContainer,
   removeDockerContainer,
   // dev
@@ -71,6 +72,7 @@ ipcMain.handle('playgrounds:createDocker', (_e, args: { image: string; port?: nu
 ipcMain.handle('playgrounds:delete', (_e, id: string) => deletePlayground(id))
 ipcMain.handle('playgrounds:openEditor', (_e, id: string) => openInEditor(id))
 ipcMain.handle('playgrounds:openTerminal', (_e, id: string) => openTerminal(id))
+ipcMain.handle('playgrounds:openDirectory', () => openPlaygroundsDirectory())
 
 // Dev command IPC
 ipcMain.handle('playgrounds:startDev', (_e, args: { id: string; command?: string }) => startDevCommand(args.id, args.command))
