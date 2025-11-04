@@ -1,5 +1,5 @@
 {
-  "name": "playground",
+  "name": "playgrounds",
   "version": "0.1.0",
   "description": "Electron app to quickly spin up GitHub and Docker playgrounds",
   "main": "dist/main/index.cjs",

@@ -1,6 +1,6 @@
-# Contributing to Playground
+# Contributing to Playgrounds
 
-Thank you for your interest in contributing to Playground! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to Playgrounds! This document provides guidelines and instructions for contributing.
 
 ## Development Setup
 
