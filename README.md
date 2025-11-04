@@ -107,6 +107,16 @@ Example:
 }
 ```
 
+## Screenshots
+
+### Installed Apps Management
+![App Store - Installed State](images/app-store-installed.png)
+*Manage your installed apps with editor, terminal, start/stop, logs, and delete actions*
+
+### App Store View
+![App Store - Initial State](images/app-store-initial.png)
+*Browse available apps from the catalog and install them with one click*
+
 ## Contributing
 
 Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
